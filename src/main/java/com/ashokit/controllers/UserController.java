@@ -81,4 +81,20 @@ public class UserController {
 	 public Map<Integer, String> getCities(@RequestParam("stateId") Integer stateId){
 		 return uservice.getCities(stateId);
 	 }
+	 
+	 @PostMapping("/register")
+	 public String registerUser(@ModelAttribute RegistrationForm registerform, Model model) {
+		 
+		    boolean saveuser = uservice.saveUser(registerform);
+		    
+		    if(saveuser) {
+		    	model.addAttribute("smsg", "user registered successfully");
+		    }else {
+		    	 model.addAttribute("errmsg", "user registration failed");
+		    }
+		    Map<Integer, String>  countries =  uservice.getCountries();
+		     model.addAttribute("countries" ,countries);
+		     
+		     return "register";
+	 }
 }

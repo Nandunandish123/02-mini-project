@@ -51,10 +51,10 @@ public class DataLoader implements ApplicationRunner{
 		City ci4 = new City(4, "hyd", 2);
 		
 		City ci5 = new City(5, "queens", 3);
-		City ci6 = new City(2, "broklyn", 3);
+		City ci6 = new City(6, "broklyn", 3);
 		
-		City ci7 = new City(3, "washington dc", 4);
-		City ci8 = new City(4, "chicago", 4);
+		City ci7 = new City(7, "washington dc", 4);
+		City ci8 = new City(8, "chicago", 4);
 		
 		cityrepo.saveAll(Arrays.asList(ci1,ci2,ci3,ci4,ci5,ci6,ci7,ci8));
 	}
