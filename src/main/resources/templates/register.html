@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bootstrap demo</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+	<h1>Register Here!</h1>
+
+	<div class="container">
+		<form action="register" method="post" th:object="${registerform}" class="form">
+			<table class="table">
+				<tr>
+					<td>Name</td>
+					<td><input type="text" th:field="*{uname}" required /> </td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="email" th:field="*{email}" required /> </td>
+				</tr>
+				<tr>
+					<td>country</td>
+					<td>
+						<select th:field="*{countryId}" id="countryId" class="form-select" required>
+							<option value="">-select-</option>
+							<option th:each="entry : ${countries.entrySet()}" th:value="${entry.key}"
+								th:text="${entry.value}">
+							</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td>State</td>
+					<td><select th:field="*{stateId}" id="stateId" class="form-select" required>
+							<option value="" autocomplete="on">-select-</option>
+
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>City</td>
+					<td><select th:field="*{cityId}" id="cityId" class="form-select" required>
+							<option value="" autocomplete="on">-select-</option>
+
+						</select>
+					</td>
+				</tr>
+			</table>
+					<input type="submit" value="SignUp" class="btn btn-primary" />
+		</form>
+
+		<a href="/">Login</a>
+	</div>
+	
+
+	<script>
+$(document).ready(function () {
+    $("#countryId").on("change", function () {
+        $("#stateId").find("option").remove();
+        $("#cityId").find("option").remove();
+
+        $.ajax({
+            type: "GET",
+            url: "/getStates?countryId=" + $('#countryId').val(),
+            success: function (result) {
+                console.log(result);
+                $.each(result, function (key, value) {
+                    console.log(key);
+                    $('<option>').val(key).text(value).appendTo('#stateId');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching states:", status, error);
+            }
+        });
+    });
+
+    $("#stateId").on("change", function () {
+        $("#cityId").find("option").remove();
+
+        $.ajax({
+            type: "GET",
+            url: "/getCities?stateId=" + $('#stateId').val(),
+            success: function (result) {
+                console.log(result);
+                $.each(result, function (key, value) {
+                    console.log(key);
+                    $('<option>').val(key).text(value).appendTo('#cityId');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching cities:", status, error);
+            }
+        });
+    });
+});
+
+</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
